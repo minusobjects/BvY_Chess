@@ -25,6 +25,8 @@ class Game
   def play(display, board)
     loop do
       begin
+        # this first message can be different if a piece is in check
+        # also, break out of loop and end game if checkmate
         display.render("#{@current_player.color.capitalize}, select a piece to move")
         first_pos = @current_player.choose_piece
         unless first_pos.nil? ||

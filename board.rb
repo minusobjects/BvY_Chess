@@ -24,7 +24,6 @@ class Board
   end
 
   def setup_board
-    # we messed around a bit with the pos numbers
     @grid[0][0] = Rook.new(:blue, self, [0, 0])
     @grid[0][1] = Knight.new(:blue, self, [1, 0])
     @grid[0][2] = Bishop.new(:blue, self, [2, 0])
@@ -75,6 +74,12 @@ class Board
     piece = @grid[start_y][start_x]
     coords = [start_x, start_y, end_x, end_y]
     raise 'Illegal move!' unless possible_move?(piece, coords)
+    # right here, check 'check'!
+    # will involve passing in a dup of the board
+    # first, a method to check if a given pos is in 'check'...
+    # then, a method that takes in a dup board and checks it for 'check'
+    # then I guess check for checkmate after move...
+    # @check as instance var of board? i.e. @check = :yellow
 
     @grid[end_y][end_x] = piece
     piece.pos = [end_x, end_y]
