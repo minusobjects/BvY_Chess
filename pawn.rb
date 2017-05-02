@@ -2,7 +2,7 @@ require 'byebug'
 class Pawn < Piece
 
   def initialize(color, board, pos)
-    super(color, board, pos, :p, :pawn)
+    super(color, board, pos, "\u2659", :pawn)
     @start_row = self.pos[1]
   end
 

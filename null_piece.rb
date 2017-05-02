@@ -5,8 +5,8 @@ class NullPiece
   attr_reader :symbol, :color
 
   def initialize
-    @symbol = '-'
-    @color = :white
+    @symbol = :+
+    @color = :light_white
   end
 
   def moves

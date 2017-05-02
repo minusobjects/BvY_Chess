@@ -14,9 +14,9 @@ class Display
     @board.grid.each_index do |row|
       @board.grid[row].each_index do |col|
         if @cursor.cursor_pos == [col, row]
-          print "#{@board.grid[row][col].to_s} ".colorize(:red)
+          print "#{@board.grid[row][col].to_s} ".colorize(:red).encode('utf-8')
         else
-          print "#{@board.grid[row][col].to_s} "
+          print "#{@board.grid[row][col].to_s} ".encode('utf-8')
         end
       end
       print "\n"
