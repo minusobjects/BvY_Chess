@@ -52,7 +52,6 @@ module SlidingPiece
     end
 
     # remove last position if it contains a piece of same color
-    # debugger
     unless potential_moves.empty?
       # check that we're not replacing the same color
       last_x, last_y = potential_moves.last

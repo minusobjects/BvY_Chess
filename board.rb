@@ -72,21 +72,20 @@ class Board
     start_x, start_y = start_pos
     end_x, end_y = end_pos
 
-    coords = [start_x, start_y, end_x, end_y]
-    raise unless possible_move?(coords)
-
     piece = @grid[start_y][start_x]
-    raise unless piece.valid_move?(start_pos, end_pos)
-    @grid[start_y][start_x], @grid[end_y][end_x] = @grid[end_y][end_x], @grid[start_y][start_x]
+    coords = [start_x, start_y, end_x, end_y]
+    raise 'Illegal move!' unless possible_move?(piece, coords)
+
+    @grid[end_y][end_x] = piece
+    piece.pos = [end_x, end_y]
+    @grid[start_y][start_x] = NullPiece.instance
   end
 
-  def possible_move?(coords)
-    if coords.any? { |num| num < 0 || num > 7 } ||
-      ! @grid[coords[0]][coords[1]].is_a?(Piece) ||
-      ! @grid[coords[2]][coords[3]].is_a?(NullPiece)
-        return false
+  def possible_move?(piece, coords)
+    if piece.moves.include?([coords[2],coords[3]])
+        return true
     end
-    true
+    false
   end
 
   def in_bounds?(pos)

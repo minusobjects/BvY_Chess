@@ -3,7 +3,7 @@ class Pawn < Piece
 
   def initialize(color, board, pos)
     super(color, board, pos, :p, :pawn)
-    @start_row = self.pos[1] # or 0? It has to be the y value
+    @start_row = self.pos[1]
   end
 
   def moves

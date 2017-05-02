@@ -1,9 +1,7 @@
-require_relative 'sliding_piece.rb'
-require 'colorize'
-
 class Piece
 
-  attr_reader :symbol, :color, :pos, :type, :board
+  attr_reader :symbol, :color, :type, :board
+  attr_accessor :pos
 
   def initialize(color, board, pos, symbol, type)
     @color = color
@@ -16,9 +14,5 @@ class Piece
   def to_s
     @symbol.to_s.colorize(color)
   end
-
-  def valid_move?(start_pos, end_pos)
-    true
-  end
-
+  
 end
