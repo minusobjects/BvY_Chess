@@ -22,14 +22,13 @@ class Display
       print "\n"
     end
     print "\n"
-    print "#{@board[@cursor.cursor_pos[0],@cursor.cursor_pos[1]].color.capitalize} #{@board[@cursor.cursor_pos[0],@cursor.cursor_pos[1]].type}"
-    print "\n"
     print "#{message}"
   end
 
 end
 
-
+# print "\n"
+# print "#{@board[@cursor.cursor_pos[0],@cursor.cursor_pos[1]].color.capitalize} #{@board[@cursor.cursor_pos[0],@cursor.cursor_pos[1]].type}"
 # print "\n"
 # print "Current space: #{@cursor.cursor_pos}"
 # print "\n"

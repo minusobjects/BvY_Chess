@@ -1,4 +1,3 @@
-require 'byebug'
 class Pawn < Piece
 
   def initialize(color, board, pos)
@@ -32,35 +31,32 @@ class Pawn < Piece
     at_start_row? ? 2 : 1
   end
 
-  # This OBVIOUSLY needs refactoring!!! REFACTOR!!!
-  def side_attacks
-    possible_attacks = []
+  def find_attacks(start_row, d1, d2)
     start_x = self.pos[0]
     start_y = self.pos[1]
-    if @start_row == 1
-      if (start_x + 1) < 8 &&
-        self.board[start_x + 1, start_y + 1].color != self.color &&
-      ! self.board[start_x + 1, start_y + 1].is_a?(NullPiece)
-        possible_attacks << [start_x + 1, start_y + 1]
-      end
-      if (start_x - 1) > -1 &&
-        self.board[start_x - 1, start_y + 1].color != self.color &&
-      ! self.board[start_x - 1, start_y + 1].is_a?(NullPiece)
-        possible_attacks << [start_x - 1, start_y + 1]
-      end
+
+    if(start_x + d1) > 7 || (start_x + d1) < 0
+      return []
     end
-    if @start_row == 6
-      if (start_x - 1) > -1 &&
-        self.board[start_x - 1, start_y - 1].color != self.color &&
-      ! self.board[start_x - 1, start_y - 1].is_a?(NullPiece)
-        possible_attacks << [start_x - 1, start_y - 1]
-      end
-      if (start_x + 1) < 8 &&
-        self.board[start_x + 1, start_y - 1].color != self.color &&
-      ! self.board[start_x + 1, start_y - 1].is_a?(NullPiece)
-        possible_attacks << [start_x + 1, start_y - 1]
-      end
+
+    attacks = []
+
+    other_piece = self.board[start_x + d1, start_y + d2]
+
+    if @start_row == start_row &&
+      other_piece.color != self.color &&
+      ! other_piece.is_a?(NullPiece)
+        attacks << [start_x + d1, start_y + d2]
     end
+    attacks
+  end
+
+  def side_attacks
+    possible_attacks = []
+    possible_attacks += find_attacks(1, 1, 1)
+    possible_attacks += find_attacks(1, -1, 1)
+    possible_attacks += find_attacks(6, -1, -1)
+    possible_attacks += find_attacks(6, 1, -1)
     possible_attacks
   end
 
