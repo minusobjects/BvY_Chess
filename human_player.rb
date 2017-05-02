@@ -8,6 +8,14 @@ class HumanPlayer
   end
 
   def play_move
+    get_input
+  end
+
+  def choose_piece
+    get_input
+  end
+
+  def get_input
     input = @cursor.get_input
     unless input.nil?
       return input

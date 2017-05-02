@@ -26,7 +26,7 @@ class Game
     loop do
       begin
         display.render("#{@current_player.color.capitalize}, select a piece to move")
-        first_pos = @current_player.play_move
+        first_pos = @current_player.choose_piece
         unless first_pos.nil? ||
           @board[first_pos[0],first_pos[1]].color != @current_player.color ||
           @board[first_pos[0],first_pos[1]].type == "null"
@@ -46,7 +46,6 @@ class Game
         second_pos = player.play_move
       end
       board.move_piece(first_pos, second_pos)
-      second_pos = nil
     switch_players
   end
 
