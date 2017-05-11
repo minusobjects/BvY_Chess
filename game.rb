@@ -25,8 +25,7 @@ class Game
   def play(display, board)
     loop do
       begin
-        # this first message can be different if a piece is in check
-        # also, break out of loop and end game if checkmate
+        # break out of loop and end game if checkmate
         message = "#{@current_player.color.capitalize}, select a piece to move"
         check1 = @board.check_message(:yellow)
         check2 = @board.check_message(:blue)

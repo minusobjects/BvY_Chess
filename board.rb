@@ -80,6 +80,7 @@ class Board
     @grid[end_y][end_x] = piece
     piece.pos = [end_x, end_y]
     @grid[start_y][start_x] = NullPiece.instance
+
     # now raise an error if current player is moving
     # into check (or not out of check)
     if in_check?(piece.color)
@@ -88,6 +89,24 @@ class Board
       @grid[end_y][end_x] = prev_piece
       raise 'Illegal move!'
     end
+  end
+
+  def check_moves(piece)
+    # tries various moves on the board,
+    # creates an index of invalid (check) moves
+    piece.moves.each do |move|
+      # so, try out each of the piece's moves and see if it puts them in
+      # check. if it does then add it to index.
+      # ultimately: if the length of check_moves is the same as piece.moves,
+      # AND the piece is currently in check, then that's checkmate.
+    end
+    
+    # if in_check?(piece.color)
+    #   @grid[start_y][start_x] = piece
+    #   piece.pos = [start_x, start_y]
+    #   @grid[end_y][end_x] = prev_piece
+    #   raise 'Illegal move!'
+    # end
   end
 
   def king_positions
