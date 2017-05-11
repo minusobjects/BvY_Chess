@@ -3,6 +3,7 @@ require 'byebug'
 require_relative 'board.rb'
 require_relative 'cursor.rb'
 require_relative 'human_player.rb'
+require_relative 'computer_player.rb'
 require_relative 'display.rb'
 
 class Game
@@ -12,8 +13,8 @@ class Game
   def initialize
     @board = Board.new
     @cursor = Cursor.new([0,0], board)
-    @player1 = HumanPlayer.new(@cursor, :yellow)
-    @player2 = HumanPlayer.new(@cursor, :blue)
+    @player1 = HumanPlayer.new(@cursor, :yellow, @board)
+    @player2 = ComputerPlayer.new(@cursor, :blue, @board)
     @display = Display.new(@board, @cursor)
     @current_player = @player1
   end

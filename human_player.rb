@@ -2,7 +2,8 @@ class HumanPlayer
 
   attr_reader :cursor, :color
 
-  def initialize(cursor, color)
+  def initialize(cursor, color, board)
+    # board is just duck typing
     @cursor = cursor
     @color = color
   end
