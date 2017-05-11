@@ -27,7 +27,10 @@ class Game
       begin
         # this first message can be different if a piece is in check
         # also, break out of loop and end game if checkmate
-        display.render("#{@current_player.color.capitalize}, select a piece to move")
+        message = "#{@current_player.color.capitalize}, select a piece to move"
+        check1 = @board.check_message(:yellow)
+        check2 = @board.check_message(:blue)
+        display.render(message, check1, check2)
         first_pos = @current_player.choose_piece
         unless first_pos.nil? ||
           @board[first_pos[0],first_pos[1]].color != @current_player.color ||

@@ -9,7 +9,7 @@ class Display
     @cursor = cursor
   end
 
-  def render(message = "")
+  def render(message = "", check1 = "", check2 = "")
     system('clear')
     @board.grid.each_index do |row|
       @board.grid[row].each_index do |col|
@@ -23,6 +23,10 @@ class Display
     end
     print "\n"
     print "#{message}"
+    print "\n\n"
+    print "#{check1}"
+    print "\n"
+    print "#{check2}"
   end
 
 end

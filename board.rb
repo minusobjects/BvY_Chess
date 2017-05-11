@@ -1,3 +1,5 @@
+require 'byebug'
+
 require_relative 'piece.rb'
 require_relative 'null_piece.rb'
 require_relative 'slideable_pieces.rb'
@@ -74,16 +76,58 @@ class Board
     piece = @grid[start_y][start_x]
     coords = [start_x, start_y, end_x, end_y]
     raise 'Illegal move!' unless possible_move?(piece, coords)
-    # right here, check 'check'!
-    # will involve passing in a dup of the board
-    # first, a method to check if a given pos is in 'check'...
-    # then, a method that takes in a dup board and checks it for 'check'
-    # then I guess check for checkmate after move...
-    # @check as instance var of board? i.e. @check = :yellow
-
+    prev_piece = @grid[end_y][end_x]
     @grid[end_y][end_x] = piece
     piece.pos = [end_x, end_y]
     @grid[start_y][start_x] = NullPiece.instance
+    # now raise an error if current player is moving
+    # into check (or not out of check)
+    if in_check?(piece.color)
+      @grid[start_y][start_x] = piece
+      piece.pos = [start_x, start_y]
+      @grid[end_y][end_x] = prev_piece
+      raise 'Illegal move!'
+    end
+  end
+
+  def king_positions
+    # returns {yellow: [x,y], blue: [x,y]}
+    result = {}
+    @grid.each_with_index do |row, r|
+      row.each_with_index do |col, c|
+        if @grid[r][c].kind_of?(King) == true
+          result[@grid[r][c].color] = [c,r]
+        end
+      end
+    end
+    result
+  end
+
+  def in_check?(color)
+    # check for the king of the color passed in
+    king_pos = king_positions[color]
+    @grid.each_with_index do |row, r|
+      row.each_with_index do |col, c|
+        if @grid[r][c].color == opposing_color(color) &&
+          @grid[r][c].moves.include?(king_pos)
+            return true
+        end
+      end
+    end
+    return false
+  end
+
+  def check_message(color)
+    if in_check?(color)
+      return "#{color.to_s.capitalize} is in check!"
+    else
+      return "#{color.to_s.capitalize} is not in check."
+    end
+  end
+
+  def opposing_color(color)
+    return :blue if color == :yellow
+    :yellow
   end
 
   def possible_move?(piece, coords)
