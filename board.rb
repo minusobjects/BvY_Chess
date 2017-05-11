@@ -118,7 +118,6 @@ class Board
   end
 
   def in_check?(color)
-    # check for the king of the color passed in
     king_pos = king_positions[color]
     @grid.each_with_index do |row, r|
       row.each_with_index do |col, c|
@@ -132,7 +131,6 @@ class Board
   end
 
   def checkmate?(color)
-    # checks if the color is in checkmate
     # only called if color is already in check
     @grid.each_with_index do |row, r|
       row.each_with_index do |col, c|
@@ -145,15 +143,6 @@ class Board
     end
     true
   end
-
-  # this should be in game, not board. Maybe a separate message class for all messages?
-  # def check_message(color)
-  #   if in_check?(color)
-  #     return "#{color.to_s.capitalize} is in check!"
-  #   else
-  #     return "#{color.to_s.capitalize} is not in check."
-  #   end
-  # end
 
   def opposing_color(color)
     return :blue if color == :yellow
