@@ -25,7 +25,6 @@ class Game
   def play(display, board)
     loop do
       begin
-        # break out of loop and end game if checkmate
         message = "#{@current_player.color.capitalize}, select a piece to move"
         check1 = @board.check_message(:yellow)
         check2 = @board.check_message(:blue)
@@ -35,11 +34,18 @@ class Game
           @board[first_pos[0],first_pos[1]].color != @current_player.color ||
           @board[first_pos[0],first_pos[1]].type == "null"
             handle_move(display, @current_player, board, first_pos)
+            if board.in_check?(@current_player.color)
+              break if board.checkmate?(@current_player.color)
+            end
         end
       rescue
         retry
       end
     end
+    color = @current_player.color
+    check1 = "#{color.capitalize} is in checkmate!"
+    check2 = "#{board.opposing_color(color).capitalize} wins!\n"
+    display.render("", check1, check2)
   end
 
   def handle_move(display, player, board, first_pos)

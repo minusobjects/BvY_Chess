@@ -1,5 +1,3 @@
-require 'byebug'
-
 require_relative 'piece.rb'
 require_relative 'null_piece.rb'
 require_relative 'slideable_pieces.rb'
@@ -29,8 +27,8 @@ class Board
     @grid[0][0] = Rook.new(:blue, self, [0, 0])
     @grid[0][1] = Knight.new(:blue, self, [1, 0])
     @grid[0][2] = Bishop.new(:blue, self, [2, 0])
-    @grid[0][3] = King.new(:blue, self, [3, 0])
-    @grid[0][4] = Queen.new(:blue, self, [4, 0])
+    @grid[0][3] = Queen.new(:blue, self, [3, 0])
+    @grid[0][4] = King.new(:blue, self, [4, 0])
     @grid[0][5] = Bishop.new(:blue, self, [5, 0])
     @grid[0][6] = Knight.new(:blue, self, [6, 0])
     @grid[0][7] = Rook.new(:blue, self, [7, 0])
@@ -90,9 +88,6 @@ class Board
     result = []
     start_x, start_y = piece.pos[0], piece.pos[1]
     piece.moves.each do |move|
-      # ultimately: if the length of check_moves is the same as piece.moves,
-      # AND the piece is currently in check, then that's checkmate.
-
       # DRY this up with above
       end_x, end_y = move[0], move[1]
       prev_piece = @grid[end_y][end_x]
@@ -136,6 +131,22 @@ class Board
     return false
   end
 
+  def checkmate?(color)
+    # checks if the color is in checkmate
+    # only called if color is already in check
+    @grid.each_with_index do |row, r|
+      row.each_with_index do |col, c|
+        piece = @grid[r][c]
+        if piece.color == color &&
+          piece.moves.length != check_moves(piece).length
+            return false
+        end
+      end
+    end
+    true
+  end
+
+  # this should be in game, not board. Maybe a separate message class for all messages?
   def check_message(color)
     if in_check?(color)
       return "#{color.to_s.capitalize} is in check!"
