@@ -73,40 +73,40 @@ class Board
     start_x, start_y = start_pos
     end_x, end_y = end_pos
 
+    # DRY this up with below
     piece = @grid[start_y][start_x]
     coords = [start_x, start_y, end_x, end_y]
     raise 'Illegal move!' unless possible_move?(piece, coords)
+
     prev_piece = @grid[end_y][end_x]
     @grid[end_y][end_x] = piece
     piece.pos = [end_x, end_y]
     @grid[start_y][start_x] = NullPiece.instance
-
-    # now raise an error if current player is moving
-    # into check (or not out of check)
-    if in_check?(piece.color)
-      @grid[start_y][start_x] = piece
-      piece.pos = [start_x, start_y]
-      @grid[end_y][end_x] = prev_piece
-      raise 'Illegal move!'
-    end
   end
 
   def check_moves(piece)
     # tries various moves on the board,
     # creates an index of invalid (check) moves
+    result = []
+    start_x, start_y = piece.pos[0], piece.pos[1]
     piece.moves.each do |move|
-      # so, try out each of the piece's moves and see if it puts them in
-      # check. if it does then add it to index.
       # ultimately: if the length of check_moves is the same as piece.moves,
       # AND the piece is currently in check, then that's checkmate.
+
+      # DRY this up with above
+      end_x, end_y = move[0], move[1]
+      prev_piece = @grid[end_y][end_x]
+      @grid[end_y][end_x] = piece
+      piece.pos = [end_x, end_y]
+      @grid[start_y][start_x] = NullPiece.instance
+      if in_check?(piece.color)
+        result << [end_x, end_y]
+      end
+      @grid[start_y][start_x] = piece
+      piece.pos = [start_x, start_y]
+      @grid[end_y][end_x] = prev_piece
     end
-    
-    # if in_check?(piece.color)
-    #   @grid[start_y][start_x] = piece
-    #   piece.pos = [start_x, start_y]
-    #   @grid[end_y][end_x] = prev_piece
-    #   raise 'Illegal move!'
-    # end
+    result
   end
 
   def king_positions
@@ -150,7 +150,8 @@ class Board
   end
 
   def possible_move?(piece, coords)
-    if piece.moves.include?([coords[2],coords[3]])
+    if piece.moves.include?([coords[2],coords[3]]) &&
+      ! check_moves(piece).include?([coords[2],coords[3]])
         return true
     end
     false
