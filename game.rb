@@ -22,12 +22,20 @@ class Game
     @current_player == @player1 ? @current_player = @player2 : @current_player = @player1
   end
 
+  def check_message(board, color)
+    if board.in_check?(color)
+      return "#{color.to_s.capitalize} is in check!"
+    else
+      return "#{color.to_s.capitalize} is not in check."
+    end
+  end
+
   def play(display, board)
     loop do
       begin
         message = "#{@current_player.color.capitalize}, select a piece to move"
-        check1 = @board.check_message(:yellow)
-        check2 = @board.check_message(:blue)
+        check1 = check_message(@board, :yellow)
+        check2 = check_message(@board, :blue)
         display.render(message, check1, check2)
         first_pos = @current_player.choose_piece
         unless first_pos.nil? ||

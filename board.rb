@@ -147,13 +147,13 @@ class Board
   end
 
   # this should be in game, not board. Maybe a separate message class for all messages?
-  def check_message(color)
-    if in_check?(color)
-      return "#{color.to_s.capitalize} is in check!"
-    else
-      return "#{color.to_s.capitalize} is not in check."
-    end
-  end
+  # def check_message(color)
+  #   if in_check?(color)
+  #     return "#{color.to_s.capitalize} is in check!"
+  #   else
+  #     return "#{color.to_s.capitalize} is not in check."
+  #   end
+  # end
 
   def opposing_color(color)
     return :blue if color == :yellow
