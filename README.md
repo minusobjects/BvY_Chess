@@ -1,8 +1,8 @@
-## Chess
+## BvY Chess
 
 ### Introduction
 
-RubyChess is a chess game built in Ruby. To play, navigate to the folder in the terminal and (assuming Ruby is installed) enter `ruby play.rb`. A prompt will ask if this game is vs. the AI or vs. another person.
+BvY Chess is a chess game built in Ruby. To play, navigate to the folder in the terminal and (assuming Ruby is installed) enter `ruby play.rb`. A prompt will ask if this game is vs. the AI or vs. another person.
 
 In the game: move the cursor around the board with the arrow keys. Hit the Spacebar to select which piece to move, and then again to select which space to move it to. If the space you select is not a valid move for your piece, you will be re-prompted to select a piece.
 
