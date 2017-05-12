@@ -1,7 +1,5 @@
 ## Chess
 
-as well as code snippets and explanations of how you implemented key features.
-
 ### Introduction
 
 RubyChess is a chess game built in Ruby. To play, navigate to the folder in the terminal and (assuming Ruby is installed) enter `ruby play.rb`. A prompt will ask if this game is vs. the AI or vs. another person.
