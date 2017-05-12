@@ -1,5 +1,3 @@
-require 'byebug'
-
 require_relative 'board.rb'
 require_relative 'cursor.rb'
 require_relative 'human_player.rb'
@@ -10,11 +8,15 @@ class Game
 
   attr_reader :board
 
-  def initialize
+  def initialize(player2_type)
     @board = Board.new
     @cursor = Cursor.new([0,0], board)
-    @player1 = HumanPlayer.new(@cursor, :yellow, @board)
-    @player2 = ComputerPlayer.new(@cursor, :blue, @board)
+    @player1 = HumanPlayer.new(@cursor, :yellow, :blue, @board)
+    if player2_type == 'computer'
+      @player2 = ComputerPlayer.new(@cursor, :blue, :yellow, @board)
+    else
+      @player2 = HumanPlayer.new(@cursor, :blue, :yellow, @board)
+    end
     @display = Display.new(@board, @cursor)
     @current_player = @player1
   end
@@ -73,6 +75,3 @@ class Game
   end
 
 end
-
-g = Game.new
-g.start_game

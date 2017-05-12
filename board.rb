@@ -71,7 +71,6 @@ class Board
     start_x, start_y = start_pos
     end_x, end_y = end_pos
 
-    # DRY this up with below
     piece = @grid[start_y][start_x]
     coords = [start_x, start_y, end_x, end_y]
     raise 'Illegal move!' unless possible_move?(piece, coords)
@@ -85,17 +84,21 @@ class Board
   def check_moves(piece)
     # tries various moves on the board,
     # creates an index of invalid (check) moves
+    # for the given piece
+
+    # DRY this up with puts_color_in_check?
+    # maybe I need like 'test_move'
+    #   # and 'reset_move' methods?
     result = []
     start_x, start_y = piece.pos[0], piece.pos[1]
     piece.moves.each do |move|
-      # DRY this up with above
       end_x, end_y = move[0], move[1]
       prev_piece = @grid[end_y][end_x]
       @grid[end_y][end_x] = piece
       piece.pos = [end_x, end_y]
       @grid[start_y][start_x] = NullPiece.instance
-      if in_check?(piece.color)
-        result << [end_x, end_y]
+      if in_check?(piece.color) == true
+        result << [move[0], move[1]]
       end
       @grid[start_y][start_x] = piece
       piece.pos = [start_x, start_y]
@@ -104,17 +107,23 @@ class Board
     result
   end
 
-  def king_positions
-    # returns {yellow: [x,y], blue: [x,y]}
-    result = {}
-    @grid.each_with_index do |row, r|
-      row.each_with_index do |col, c|
-        if @grid[r][c].kind_of?(King) == true
-          result[@grid[r][c].color] = [c,r]
-        end
-      end
+  def puts_color_in_check?(coords, color)
+    answer = :no
+    start_x, start_y = coords[0], coords[1]
+    end_x, end_y = coords[2], coords[3]
+    piece = @grid[start_y][start_x]
+    prev_piece = @grid[end_y][end_x]
+    @grid[end_y][end_x] = piece
+    piece.pos = [end_x, end_y]
+    @grid[start_y][start_x] = NullPiece.instance
+    if in_check?(color)
+      answer = :mate if checkmate?(color)
+      answer = :check
     end
-    result
+    @grid[start_y][start_x] = piece
+    piece.pos = [start_x, start_y]
+    @grid[end_y][end_x] = prev_piece
+    answer
   end
 
   def in_check?(color)
@@ -128,6 +137,19 @@ class Board
       end
     end
     return false
+  end
+
+  def king_positions
+    # returns {yellow: [x,y], blue: [x,y]}
+    result = {}
+    @grid.each_with_index do |row, r|
+      row.each_with_index do |col, c|
+        if @grid[r][c].kind_of?(King) == true
+          result[@grid[r][c].color] = [c,r]
+        end
+      end
+    end
+    result
   end
 
   def checkmate?(color)

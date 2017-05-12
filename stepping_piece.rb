@@ -9,8 +9,6 @@ module SteppingPiece
     get_valid_moves(all_moves)
   end
 
-  # private
-
   def move_dirs
     case self.type
     when :king

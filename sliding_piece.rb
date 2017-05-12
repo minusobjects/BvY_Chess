@@ -9,8 +9,6 @@ module SlidingPiece
     all_moves
   end
 
-  # private
-
   def move_dirs
     case self.type
     when :rook
