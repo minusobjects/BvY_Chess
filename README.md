@@ -18,4 +18,4 @@ The program ends when a player is in checkmate (or, just hit Ctrl-C to terminate
 
 ### Future
 
-Going forward, I plan to build-out the computer player by using polytree data structures to store chains of potential moves, allowing the AI to choose its moves based on long-term outcome.
+Going forward, I plan to build-out the computer player by using polytree data structures to store chains of potential moves, allowing the AI to choose its moves based on long-term outcome. 
