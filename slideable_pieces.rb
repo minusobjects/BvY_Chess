@@ -1,8 +1,8 @@
-require_relative 'sliding_piece.rb'
+require_relative 'slideable.rb'
 
 class Rook < Piece
 
-  include SlidingPiece
+  include Slideable
 
   def initialize(color, board, pos)
     super(color, board, pos, "\u2656", :rook)
@@ -12,7 +12,7 @@ end
 
 class Bishop < Piece
 
-  include SlidingPiece
+  include Slideable
 
   def initialize(color, board, pos)
     super(color, board, pos, "\u2657", :bishop)
@@ -22,7 +22,7 @@ end
 
 class Queen < Piece
 
-  include SlidingPiece
+  include Slideable
 
   def initialize(color, board, pos)
     super(color, board, pos, "\u2655", :queen)

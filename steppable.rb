@@ -1,4 +1,4 @@
-module SteppingPiece
+module Steppable
 
   def moves
     all_moves = []

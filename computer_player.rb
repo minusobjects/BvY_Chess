@@ -1,10 +1,10 @@
 POINTS = {
-  NullPiece: 0,
-  Pawn: 1,
-  Rook: 2,
-  Knight: 3,
-  Bishop: 4,
-  Queen: 5
+  null: 0,
+  pawn: 1,
+  rook: 2,
+  knight: 3,
+  bishop: 4,
+  queen: 5
 }
 
 class ComputerPlayer
@@ -30,8 +30,6 @@ class ComputerPlayer
     choose_random_move(@possible_pieces,@chosen_piece)
   end
 
-  # could probably use this sort of thing elsewhere, too
-  # could be more efficient overall, then
   def piece_valid_moves(piece)
     valid_moves = []
     check_moves = @board.check_moves(piece)
@@ -106,7 +104,7 @@ class ComputerPlayer
 
   def capture_points(end_x,end_y)
     piece = @board[end_x,end_y]
-    POINTS[piece.class.name.to_sym]
+    POINTS[piece.type.to_sym]
   end
 
   def choose_random_piece(pieces)

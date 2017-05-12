@@ -88,7 +88,7 @@ class Board
 
     # DRY this up with puts_color_in_check?
     # maybe I need like 'test_move'
-    #   # and 'reset_move' methods?
+    # and 'reset_move' methods?
     result = []
     start_x, start_y = piece.pos[0], piece.pos[1]
     piece.moves.each do |move|

@@ -1,4 +1,4 @@
-module SlidingPiece
+module Slideable
 
   def moves
     all_moves = []

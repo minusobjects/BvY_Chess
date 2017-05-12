@@ -1,3 +1,4 @@
+require 'byebug'
 require 'colorize'
 require_relative 'game.rb'
 

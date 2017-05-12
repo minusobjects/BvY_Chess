@@ -1,8 +1,8 @@
-require_relative 'stepping_piece.rb'
+require_relative 'steppable.rb'
 
 class Knight < Piece
 
-  include SteppingPiece
+  include Steppable
 
   def initialize(color, board, pos)
     super(color, board, pos, "\u2658", :knight)
@@ -12,7 +12,7 @@ end
 
 class King < Piece
 
-  include SteppingPiece
+  include Steppable
 
   def initialize(color, board, pos)
     super(color, board, pos, "\u2654", :king)

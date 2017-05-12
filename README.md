@@ -1,64 +1,23 @@
 ## Chess
 
-(I need to edit this of course. From Tassos:
-  - README does not inspire confidence. Add instructions for how to play a working chess, as well as code snippets and explanations of how you implemented key features.
-  - Clean up commit history.)
+as well as code snippets and explanations of how you implemented key features.
 
+### Introduction
 
-RubyChess is a chess application
+RubyChess is a chess game built in Ruby. To play, navigate to the folder in the terminal and (assuming Ruby is installed) enter `ruby play.rb`. A prompt will ask if this game is vs. the AI or vs. another person.
 
+In the game: move the cursor around the board with the arrow keys. Hit the Spacebar to select which piece to move, and then again to select which space to move it to. If the space you select is not a valid move for your piece, you will be re-prompted to select a piece.
 
+The program ends when a player is in checkmate (or, just hit Ctrl-C to terminate).
 
-### Background
+### Features
 
-Hum will be a tool to mix sound via images: the RGB pixel data of a given image will modulate the volume of three sound files (one for each channel). My goal for this project is that it may be a fun and intuitive music-making tool for people without much musical experience (which would include myself).
+**Move objects:** Taking some influence from my experiences with React.js/Redux - specifically, how the Redux architecture passes data down from an initial 'store' to various components - the potential moves (on a given turn) for the computer player are added to a hash, which is then passed to different methods which algorithmically filter the hash until it contains only the most desirable potential moves for that turn (i.e. a move that results in checkmate is prioritized over a move that results in check, a move that results in a captured bishop is prioritized over a move that results in a captured pawn, etc.). This means that it would be easy to, for example, have the AI choose moves completely at random, or have the AI select from a set of less-desirable moves - it's just a matter of setting restrictions on which moves will be included in the final instance of the hash.
 
-### MVP
+**Single board:** Potential subsequent moves (necessary to determine moves for the computer player, and for determining whether or not a player is in checkmate) are calculated by modifying and then resetting a single instance of the board class. This ends up being less space-intensive than, for example, a solution which continually duplicates the board to calculate future moves.
 
-Users will be able to:
-- Upload image and sound files.
-- Play/pause/stop the music.
-- **Addition:** Draw colors to the canvas to affect the sound.
+**Object-oriented piece construction:** The various pieces were constructed using object-oriented programming patterns to maintain consistency. For example, all pieces inherit from a `Piece` class with variables for color, position and type, while the `Knight` and `King` classes inherit methods from a `Steppable` module to determine valid moves.
 
-The app will:
-- Modulate sound via an image's RGB color data.
-- Display uploaded images and play uploaded sound.
-- Display relevant file names
+### Future
 
-There will also be:
-- A modal with information on how to use the app.
-- a production README.
-
-### Technologies
-
-This project will be implemented with:
-- `Howler.js` - a JS library for working with sound.
-- The `HTML5 Canvas` and `File` APIs (allows for uploading files without a backend).
-- The `Canvas`'s `getImageData()` function.
-- `Webpack` to bundle files.
-
-There will be individual scripts to handle distinct elements of the app: `display.js` for the main display, `sound_file.js` to handle individual sound files, and `modulate.js` to handle the actual work of modifying the sound files.
-
-### Wireframes
-
-The app will consist of a single screen (plus the instructions modal). There will be simple controls to upload files and to play/pause/stop the audio. There will also be links to my own sites (Github, LinkedIn, etc.). Most of the app will be given over to the uploaded image - in a sense this app can also function as a sort of gallery display for a given image.
-
-![image of main app](./hum_main_app.png)
-![image of instructions](./hum_instructions.png)
-
-### Implementation Timeline
-
-**Day 1:** Test out the basics of the technologies/libraries I'm implementing - make sure I'm able to upload files via the Canvas, play multiple audio files via Howler, etc. Also, work on overall visual layout.
-
-**Day 2:** Go further into these technologies - modulate audio files via Howler, get pixel data via the Canvas, etc.
-
-**Day 3:** Build out the core logic of the app - the goal is to be able to upload audio and image files and to gradually modulate the audio files based on the pixel data in individual images.
-
-**Day 4:** Add styling to the controls. Add the instructions modal, links, etc.
-
-### Bonus Features
-
-Once the basics are working, there are all sorts of ways this project could expand, including:
-- More controls for modulating the audio.
-- The ability to save files on a backend.
-- The ability to integrate live video imagery rather than just static image files.
+Going forward, I plan to build-out the computer player by using polytree data structures to store chains of potential moves, allowing the AI to choose its moves based on long-term outcome.

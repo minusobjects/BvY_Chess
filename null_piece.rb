@@ -2,11 +2,12 @@ require 'singleton'
 
 class NullPiece
   include Singleton
-  attr_reader :symbol, :color
+  attr_reader :symbol, :color, :type
 
   def initialize
     @symbol = :+
     @color = :light_white
+    @type = :null
   end
 
   def moves
