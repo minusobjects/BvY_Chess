@@ -6,8 +6,8 @@ class Pawn < Piece
   end
 
   def moves
-
     potential_moves = []
+    return potential_moves if self.pos[1] == 0 || self.pos[1] == 7
     forward_steps.times do |i|
       potential_moves << [self.pos[0], (self.pos[1] + ((i + 1) * forward_dir))]
       if self.board[potential_moves.last[0], potential_moves.last[1]].is_a?(Piece)

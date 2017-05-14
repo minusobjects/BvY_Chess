@@ -30,6 +30,8 @@ class ComputerPlayer
     choose_random_move(@possible_pieces,@chosen_piece)
   end
 
+  private
+
   def piece_valid_moves(piece)
     valid_moves = []
     check_moves = @board.check_moves(piece)
