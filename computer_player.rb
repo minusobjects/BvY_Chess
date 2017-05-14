@@ -56,14 +56,9 @@ class ComputerPlayer
   end
 
   def move_hierarchy(pieces)
-    # this needs to be destructured!
-    checkmate_moves = []
-    check_moves = []
+    ordered_moves = Array.new(4) { Array.new }
+    # 0 = checkmate, 1 = check, 2 = capture, 3 = other
     capture_obj = {}
-    capture_moves = []
-    other_moves = []
-    selected_moves = nil
-    moves = {}
 
     pieces_start = pieces.keys
     pieces_start.each do |start_pos|
@@ -72,26 +67,31 @@ class ComputerPlayer
         check = @board.puts_color_in_check?(coords, @opp_color)
         points = capture_points(end_pos[0],end_pos[1])
         if check == :mate
-          checkmate_moves << start_pos << end_pos
+          ordered_moves[0] << start_pos << end_pos
         elsif check == :check
-          check_moves << start_pos << end_pos
+          ordered_moves[1] << start_pos << end_pos
         elsif points > 0
           capture_obj[points] ||= []
           capture_obj[points] << start_pos << end_pos
         else
-          other_moves << start_pos << end_pos
+          ordered_moves[3] << start_pos << end_pos
         end
       end
     end
-    capture_moves = capture_obj[capture_obj.keys.max] unless capture_obj.empty?
-    if ! checkmate_moves.empty?
-      selected_moves = checkmate_moves
-    elsif ! check_moves.empty?
-      selected_moves = check_moves
-    elsif ! capture_moves.empty?
-      selected_moves = capture_moves
+    ordered_moves[2] = capture_obj[capture_obj.keys.max] unless capture_obj.empty?
+    select_moves(ordered_moves)
+  end
+
+  def select_moves(ordered_moves)
+    moves = {}
+    if ! ordered_moves[0].empty?
+      selected_moves = ordered_moves[0]
+    elsif ! ordered_moves[1].empty?
+      selected_moves = ordered_moves[1]
+    elsif ! ordered_moves[2].empty?
+      selected_moves = ordered_moves[2]
     else
-      selected_moves = other_moves
+      selected_moves = ordered_moves[3]
     end
     i = 0
     while i < selected_moves.length

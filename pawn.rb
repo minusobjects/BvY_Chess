@@ -18,6 +18,8 @@ class Pawn < Piece
     potential_moves + side_attacks
   end
 
+  private
+
   def at_start_row?
     return true if self.pos[1] == @start_row
     false

@@ -23,6 +23,81 @@ class Board
     @grid[y][x] = value
   end
 
+  def move_piece(start_pos, end_pos) # enter pos [x,y]
+    start_x, start_y = start_pos
+    end_x, end_y = end_pos
+
+    piece = @grid[start_y][start_x]
+    coords = [start_x, start_y, end_x, end_y]
+    raise 'Illegal move!' unless possible_move?(piece, coords)
+
+    @grid[end_y][end_x] = piece
+    piece.pos = [end_x, end_y]
+    @grid[start_y][start_x] = NullPiece.instance
+  end
+
+  def in_check?(color)
+    king_pos = king_positions[color]
+    @grid.each_with_index do |row, r|
+      row.each_with_index do |col, c|
+        if @grid[r][c].color == opposing_color(color) &&
+          @grid[r][c].moves.include?(king_pos)
+            return true
+        end
+      end
+    end
+    return false
+  end
+
+  def check_moves(piece)
+    # creates an array of invalid (check) moves for the given piece
+    result = []
+    piece.moves.each do |move|
+      coords = [piece.pos[0], piece.pos[1], move[0], move[1]]
+      prev_piece = @grid[coords[3]][coords[2]]
+      test_move(coords, piece)
+      if in_check?(piece.color) == true
+        result << [move[0], move[1]]
+      end
+      reset_move(coords, piece, prev_piece)
+    end
+    result
+  end
+
+  def puts_color_in_check?(coords, color)
+    answer = :no
+    piece = @grid[coords[1]][coords[0]]
+    prev_piece = @grid[coords[3]][coords[2]]
+    test_move(coords, piece)
+    if in_check?(color)
+      answer = :mate if checkmate?(color)
+      answer = :check
+    end
+    reset_move(coords, piece, prev_piece)
+    answer
+  end
+
+  def checkmate?(color)
+    # only called if color is already in check
+    @grid.each_with_index do |row, r|
+      row.each_with_index do |col, c|
+        piece = @grid[r][c]
+        if piece.color == color &&
+          piece.moves.length != check_moves(piece).length
+            return false
+        end
+      end
+    end
+    true
+  end
+
+  def opposing_color(color)
+    return :blue if color == :yellow
+    :yellow
+  end
+
+  private
+
   def setup_board
     @grid[0][0] = Rook.new(:blue, self, [0, 0])
     @grid[0][1] = Knight.new(:blue, self, [1, 0])
@@ -67,19 +142,6 @@ class Board
     end
   end
 
-  def move_piece(start_pos, end_pos) # enter pos [x,y]
-    start_x, start_y = start_pos
-    end_x, end_y = end_pos
-
-    piece = @grid[start_y][start_x]
-    coords = [start_x, start_y, end_x, end_y]
-    raise 'Illegal move!' unless possible_move?(piece, coords)
-
-    @grid[end_y][end_x] = piece
-    piece.pos = [end_x, end_y]
-    @grid[start_y][start_x] = NullPiece.instance
-  end
-
   def test_move(coords, piece)
     @grid[coords[3]][coords[2]] = piece
     piece.pos = [coords[2], coords[3]]
@@ -90,47 +152,6 @@ class Board
     @grid[coords[1]][coords[0]] = piece
     piece.pos = [coords[0], coords[1]]
     @grid[coords[3]][coords[2]] = prev_piece
-  end
-
-  def check_moves(piece)
-    # creates an array of invalid (check) moves for the given piece
-    result = []
-    piece.moves.each do |move|
-      coords = [piece.pos[0], piece.pos[1], move[0], move[1]]
-      prev_piece = @grid[coords[3]][coords[2]]
-      test_move(coords, piece)
-      if in_check?(piece.color) == true
-        result << [move[0], move[1]]
-      end
-      reset_move(coords, piece, prev_piece)
-    end
-    result
-  end
-
-  def puts_color_in_check?(coords, color)
-    answer = :no
-    piece = @grid[coords[1]][coords[0]]
-    prev_piece = @grid[coords[3]][coords[2]]
-    test_move(coords, piece)
-    if in_check?(color)
-      answer = :mate if checkmate?(color)
-      answer = :check
-    end
-    reset_move(coords, piece, prev_piece)
-    answer
-  end
-
-  def in_check?(color)
-    king_pos = king_positions[color]
-    @grid.each_with_index do |row, r|
-      row.each_with_index do |col, c|
-        if @grid[r][c].color == opposing_color(color) &&
-          @grid[r][c].moves.include?(king_pos)
-            return true
-        end
-      end
-    end
-    return false
   end
 
   def king_positions
@@ -144,25 +165,6 @@ class Board
       end
     end
     result
-  end
-
-  def checkmate?(color)
-    # only called if color is already in check
-    @grid.each_with_index do |row, r|
-      row.each_with_index do |col, c|
-        piece = @grid[r][c]
-        if piece.color == color &&
-          piece.moves.length != check_moves(piece).length
-            return false
-        end
-      end
-    end
-    true
-  end
-
-  def opposing_color(color)
-    return :blue if color == :yellow
-    :yellow
   end
 
   def possible_move?(piece, coords)
