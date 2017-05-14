@@ -49,8 +49,8 @@ class Game
               break if board.checkmate?(@current_player.color)
             end
         end
-      rescue
-        retry
+      # rescue
+      #   retry
       end
     end
     color = @current_player.color

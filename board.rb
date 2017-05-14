@@ -75,54 +75,48 @@ class Board
     coords = [start_x, start_y, end_x, end_y]
     raise 'Illegal move!' unless possible_move?(piece, coords)
 
-    prev_piece = @grid[end_y][end_x]
     @grid[end_y][end_x] = piece
     piece.pos = [end_x, end_y]
     @grid[start_y][start_x] = NullPiece.instance
   end
 
-  def check_moves(piece)
-    # tries various moves on the board,
-    # creates an index of invalid (check) moves
-    # for the given piece
+  def test_move(coords, piece)
+    @grid[coords[3]][coords[2]] = piece
+    piece.pos = [coords[2], coords[3]]
+    @grid[coords[1]][coords[0]] = NullPiece.instance
+  end
 
-    # DRY this up with puts_color_in_check?
-    # maybe I need like 'test_move'
-    # and 'reset_move' methods?
+  def reset_move(coords, piece, prev_piece)
+    @grid[coords[1]][coords[0]] = piece
+    piece.pos = [coords[0], coords[1]]
+    @grid[coords[3]][coords[2]] = prev_piece
+  end
+
+  def check_moves(piece)
+    # creates an array of invalid (check) moves for the given piece
     result = []
-    start_x, start_y = piece.pos[0], piece.pos[1]
     piece.moves.each do |move|
-      end_x, end_y = move[0], move[1]
-      prev_piece = @grid[end_y][end_x]
-      @grid[end_y][end_x] = piece
-      piece.pos = [end_x, end_y]
-      @grid[start_y][start_x] = NullPiece.instance
+      coords = [piece.pos[0], piece.pos[1], move[0], move[1]]
+      prev_piece = @grid[coords[3]][coords[2]]
+      test_move(coords, piece)
       if in_check?(piece.color) == true
         result << [move[0], move[1]]
       end
-      @grid[start_y][start_x] = piece
-      piece.pos = [start_x, start_y]
-      @grid[end_y][end_x] = prev_piece
+      reset_move(coords, piece, prev_piece)
     end
     result
   end
 
   def puts_color_in_check?(coords, color)
     answer = :no
-    start_x, start_y = coords[0], coords[1]
-    end_x, end_y = coords[2], coords[3]
-    piece = @grid[start_y][start_x]
-    prev_piece = @grid[end_y][end_x]
-    @grid[end_y][end_x] = piece
-    piece.pos = [end_x, end_y]
-    @grid[start_y][start_x] = NullPiece.instance
+    piece = @grid[coords[1]][coords[0]]
+    prev_piece = @grid[coords[3]][coords[2]]
+    test_move(coords, piece)
     if in_check?(color)
       answer = :mate if checkmate?(color)
       answer = :check
     end
-    @grid[start_y][start_x] = piece
-    piece.pos = [start_x, start_y]
-    @grid[end_y][end_x] = prev_piece
+    reset_move(coords, piece, prev_piece)
     answer
   end
 
