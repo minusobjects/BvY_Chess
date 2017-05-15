@@ -96,6 +96,10 @@ class Board
     :yellow
   end
 
+  def in_bounds?(pos)
+    pos.all? { |n| n >= 0 && n <= 7 }
+  end
+
   private
 
   def setup_board
@@ -173,10 +177,6 @@ class Board
         return true
     end
     false
-  end
-
-  def in_bounds?(pos)
-    pos.all? { |n| n >= 0 && n <= 7 }
   end
 
 end

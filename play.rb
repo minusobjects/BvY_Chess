@@ -1,6 +1,8 @@
+#!/usr/bin/env ruby
+
 require 'byebug'
 require 'colorize'
-require_relative 'game.rb'
+require_relative './src/game.rb'
 
 game = nil
 

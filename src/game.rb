@@ -11,8 +11,8 @@ class Game
   def initialize(player2_type)
     @board = Board.new
     @cursor = Cursor.new([0,0], board)
-    # @player1 = HumanPlayer.new(@cursor, :yellow, :blue, @board)
-    @player1 = ComputerPlayer.new(@cursor, :yellow, :blue, @board)
+    @player1 = HumanPlayer.new(@cursor, :yellow, :blue, @board)
+    # @player1 = ComputerPlayer.new(@cursor, :yellow, :blue, @board)
     if player2_type == 'computer'
       @player2 = ComputerPlayer.new(@cursor, :blue, :yellow, @board)
     else
