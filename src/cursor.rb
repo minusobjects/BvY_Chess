@@ -90,7 +90,7 @@ class Cursor
     end
 
     STDIN.echo = true # the console prints return values again
-    STDIN.cooked! # the opposite of raw mode :)
+    STDIN.cooked! # the opposite of raw mode
 
     return input
   end

@@ -27,7 +27,7 @@ class ComputerPlayer
   end
 
   def play_move
-    choose_random_move(@possible_pieces,@chosen_piece)
+    choose_random_move(@possible_pieces, @chosen_piece)
   end
 
   private
@@ -104,8 +104,8 @@ class ComputerPlayer
     moves
   end
 
-  def capture_points(end_x,end_y)
-    piece = @board[end_x,end_y]
+  def capture_points(end_x, end_y)
+    piece = @board[end_x, end_y]
     POINTS[piece.type.to_sym]
   end
 
@@ -113,7 +113,7 @@ class ComputerPlayer
     random_piece = pieces.keys.sample
   end
 
-  def choose_random_move(pieces,piece)
+  def choose_random_move(pieces, piece)
     random_move = pieces[piece].sample
   end
 
